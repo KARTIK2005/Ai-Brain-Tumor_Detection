@@ -6,8 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Upload, Loader2 } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { Skeleton } from "@/components/ui/skeleton";
-import dynamic from "next/dynamic";
-
+import AboutUs from "@/components/AboutUs"; // <-- Added
 
 export default function Home() {
   const [file, setFile] = useState<File | null>(null);
@@ -38,20 +37,15 @@ export default function Home() {
     setLoading(false);
   };
 
-  const chartData = result
-    ? [
-      { name: "Confidence", value: result.confidence * 100 },
-      { name: "Remaining", value: 100 - result.confidence * 100 },
-    ]
-    : [];
-
   return (
-    <div className="space-y-8">
+    <div className="space-y-16">
+      {/* Title */}
       <h1 className="text-4xl font-bold text-center">Brain Tumor Detection</h1>
       <p className="text-center text-gray-600">
         Upload an MRI scan to get a deep-learning–based prediction.
       </p>
 
+      {/* Upload Card */}
       <Card className="p-6">
         <CardHeader>
           <CardTitle>Upload MRI Scan</CardTitle>
@@ -123,13 +117,14 @@ export default function Home() {
             <CardTitle>Prediction Results</CardTitle>
           </CardHeader>
 
-          <CardContent className="space-y-4">
+          <CardContent className="space-y-6">
             <div className="text-center">
               <p className="text-xl">
                 Result:{" "}
                 <span
-                  className={`font-bold ${result.label === "Tumor" ? "text-red-600" : "text-green-600"
-                    }`}
+                  className={`font-bold ${
+                    result.label === "Tumor" ? "text-red-600" : "text-green-600"
+                  }`}
                 >
                   {result.label}
                 </span>
@@ -139,8 +134,7 @@ export default function Home() {
               </p>
             </div>
 
-            {/* FINAL Chart Component */}
-            {/* <ConfidenceChart data={chartData} /> */}
+            {/* Confidence Bar */}
             <div className="space-y-3">
               <p className="text-center text-gray-700 font-medium">
                 Confidence: {(result.confidence * 100).toFixed(2)}%
@@ -148,16 +142,19 @@ export default function Home() {
 
               <div className="w-full bg-gray-200 rounded-full h-4">
                 <div
-                  className={`h-4 rounded-full ${result.label === "Tumor" ? "bg-red-500" : "bg-green-500"
-                    }`}
+                  className={`h-4 rounded-full ${
+                    result.label === "Tumor" ? "bg-red-500" : "bg-green-500"
+                  }`}
                   style={{ width: `${result.confidence * 100}%` }}
                 ></div>
               </div>
             </div>
-
           </CardContent>
         </Card>
       )}
+
+      {/* ⭐ ABOUT US SECTION ADDED HERE ⭐ */}
+      <AboutUs />
     </div>
   );
 }
