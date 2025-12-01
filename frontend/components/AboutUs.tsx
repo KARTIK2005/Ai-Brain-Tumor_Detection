@@ -1,146 +1,147 @@
 "use client";
 
-import { useRef, useMemo } from "react";
+import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
+import { Card, CardContent } from "@/components/ui/card";
 
-/** Helper: Split sentence to words preserving spacing */
-function splitWords(text: string) {
-  return text.split(" ").map((w) => w + " ");
-}
+const containerVariant = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.2,
+    },
+  },
+};
 
-/** Word animation */
-const wordVariant = {
-  hidden: { opacity: 0, y: 18 },
-  visible: (i: number) => ({
+const itemVariant = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
     opacity: 1,
     y: 0,
     transition: {
-      delay: i * 0.045,
-      duration: 0.55,
+      duration: 0.6,
       ease: "easeOut",
     },
-  }),
+  },
 };
 
 export default function AboutUs() {
   const secRef = useRef(null);
   const inView = useInView(secRef, {
     once: true,
-    margin: "-10% 0px -10% 0px",
+    margin: "-20% 0px -20% 0px",
   });
 
-  // Person Introductions
-  const kartikText =
-    "I’m Kartik Singhal, a Computer Science undergraduate at B.K. Birla Institute of Engineering & Technology with hands-on experience in front-end development and UI/UX. I’ve worked with modern web technologies like React, Next.js, Tailwind, and MongoDB, and contributed to real-world projects during my internship at Kredmint Technologies. I enjoy building clean, responsive interfaces and have developed projects ranging from an AI-based crop disease detector to full-fledged web apps. I’m enthusiastic about creating user-focused digital experiences and continuously improving my skills in web development.";
-  const neerajText =
-    "I’m Neeraj Rao — a frontend and optimization engineer passionate about creating sleek, high-performance user interfaces. I specialize in blending modern design with technical precision to craft seamless digital experiences.";
-
-  const kartikWords = useMemo(() => splitWords(kartikText), []);
-  const neerajWords = useMemo(() => splitWords(neerajText), []);
+  const team = [
+    {
+      name: "Kartik Singhal",
+      role: "Frontend Developer & UI/UX Designer",
+      description:
+        "Computer Science undergraduate at B.K. Birla Institute of Engineering & Technology, specializing in modern web technologies including React, Next.js, and Tailwind CSS. Previously interned at Kredmint Technologies, contributing to production applications with MongoDB integration.",
+      expertise: [
+        "Frontend Development",
+        "UI/UX Design",
+        "React & Next.js",
+        "AI Integration",
+      ],
+    },
+    {
+      name: "Neeraj Rao",
+      role: "Frontend Engineer & Performance Specialist",
+      description:
+        "Passionate about building high-performance user interfaces with a focus on optimization and seamless user experiences. Expertise in combining modern design principles with technical precision to deliver exceptional digital products.",
+      expertise: [
+        "Performance Optimization",
+        "Modern UI Design",
+        "Frontend Architecture",
+        "User Experience",
+      ],
+    },
+  ];
 
   return (
-    <section ref={secRef} className="py-28 px-6 max-w-5xl mx-auto">
-      {/* Title */}
-      <motion.h2
-        initial={{ opacity: 0, y: 30 }}
-        animate={inView ? { opacity: 1, y: 0 } : {}}
-        transition={{ duration: 0.7 }}
-        className="text-4xl md:text-5xl font-extrabold text-center text-gray-900 mb-16"
+    <section ref={secRef} className="py-20 px-4">
+      <motion.div
+        variants={containerVariant}
+        initial="hidden"
+        animate={inView ? "visible" : "hidden"}
+        className="space-y-12"
       >
-        About Us
-      </motion.h2>
+        {/* Title */}
+        <motion.div variants={itemVariant} className="text-center space-y-3">
+          <h2 className="text-4xl md:text-5xl font-bold tracking-tight">
+            About Us
+          </h2>
+          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+            Meet the team behind this AI-powered brain tumor detection system
+          </p>
+        </motion.div>
 
-      {/* Person 1 — Kartik */}
-      <div className="mb-16">
-        <motion.h3
-          initial={{ opacity: 0, y: 25 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.7 }}
-          className="text-3xl font-bold text-blue-600 mb-4"
-        >
-          Kartik Singhal
-        </motion.h3>
+        {/* Team Grid */}
+        <div className="grid md:grid-cols-2 gap-6">
+          {team.map((member, index) => (
+            <motion.div key={member.name} variants={itemVariant}>
+              <Card className="h-full hover:shadow-lg transition-shadow duration-300">
+                <CardContent className="p-6 space-y-4">
+                  {/* Name & Role */}
+                  <div className="space-y-1">
+                    <motion.h3
+                      className="text-2xl font-bold"
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                      transition={{ delay: 0.1 + index * 0.2, duration: 0.6 }}
+                    >
+                      {member.name}
+                    </motion.h3>
+                    <motion.p
+                      className="text-sm text-muted-foreground font-medium"
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                      transition={{ delay: 0.2 + index * 0.2, duration: 0.6 }}
+                    >
+                      {member.role}
+                    </motion.p>
+                  </div>
 
-        <p className="text-lg md:text-xl text-gray-800 leading-relaxed">
-          {kartikWords.map((word, i) => (
-            <motion.span
-              key={i}
-              className="relative inline-block mr-[2px] pb-1"
-              variants={wordVariant}
-              initial="hidden"
-              animate={inView ? "visible" : "hidden"}
-              custom={i}
-            >
-              {/* background highlight */}
-              <motion.span
-                className="absolute inset-0 bg-blue-200/40 rounded-sm -z-10"
-                initial={{ scaleX: 0, opacity: 0 }}
-                animate={
-                  inView
-                    ? {
-                        scaleX: 1,
-                        opacity: 1,
-                        transition: {
-                          delay: i * 0.045,
-                          duration: 0.35,
-                          ease: "easeOut",
-                        },
-                      }
-                    : {}
-                }
-                style={{ transformOrigin: "left" }}
-              />
-              {word}
-            </motion.span>
+                  {/* Description */}
+                  <motion.p
+                    className="text-base leading-relaxed"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                    transition={{ delay: 0.3 + index * 0.2, duration: 0.6 }}
+                  >
+                    {member.description}
+                  </motion.p>
+
+                  {/* Expertise Tags */}
+                  <motion.div
+                    className="pt-2"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                    transition={{ delay: 0.5 + index * 0.2, duration: 0.6 }}
+                  >
+                    <p className="text-sm font-semibold mb-2">Expertise:</p>
+                    <div className="flex flex-wrap gap-2">
+                      {member.expertise.map((skill, skillIndex) => (
+                        <motion.span
+                          key={skill}
+                          className="px-3 py-1 text-xs font-medium bg-primary/10 text-primary rounded-full"
+                          initial={{ opacity: 0, scale: 0.8 }}
+                          animate={inView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
+                          transition={{ delay: 0.7 + index * 0.2 + skillIndex * 0.1, duration: 0.4 }}
+                        >
+                          {skill}
+                        </motion.span>
+                      ))}
+                    </div>
+                  </motion.div>
+                </CardContent>
+              </Card>
+            </motion.div>
           ))}
-        </p>
-      </div>
-
-      {/* Person 2 — Neeraj */}
-      <div>
-        <motion.h3
-          initial={{ opacity: 0, y: 25 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.7 }}
-          className="text-3xl font-bold text-purple-600 mb-4"
-        >
-          Neeraj Rao
-        </motion.h3>
-
-        <p className="text-lg md:text-xl text-gray-800 leading-relaxed">
-          {neerajWords.map((word, i) => (
-            <motion.span
-              key={i}
-              className="relative inline-block mr-[2px] pb-1"
-              variants={wordVariant}
-              initial="hidden"
-              animate={inView ? "visible" : "hidden"}
-              custom={i}
-            >
-              {/* background highlight */}
-              <motion.span
-                className="absolute inset-0 bg-purple-200/40 rounded-sm -z-10"
-                initial={{ scaleX: 0, opacity: 0 }}
-                animate={
-                  inView
-                    ? {
-                        scaleX: 1,
-                        opacity: 1,
-                        transition: {
-                          delay: i * 0.045,
-                          duration: 0.35,
-                          ease: "easeOut",
-                        },
-                      }
-                    : {}
-                }
-                style={{ transformOrigin: "left" }}
-              />
-              {word}
-            </motion.span>
-          ))}
-        </p>
-      </div>
+        </div>
+      </motion.div>
     </section>
   );
 }

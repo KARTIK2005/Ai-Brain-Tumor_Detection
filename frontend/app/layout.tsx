@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import SplashScreen from "@/components/ui/SplashScreen";
+import ThemeToggle from "@/components/ThemeToggle";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,15 +28,16 @@ export default function RootLayout({
     <html lang="en">
       <body
         suppressHydrationWarning={true}
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-50`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         {/* Animated Splash Screen */}
         <SplashScreen />
 
-        {/* Global Container */}
-        <div className="min-h-screen flex flex-col items-center justify-start py-8 px-4">
-          <main className="w-full max-w-4xl">{children}</main>
-        </div>
+        {/* Theme Toggle Button */}
+        <ThemeToggle />
+
+        {/* Main Content */}
+        <main className="min-h-screen">{children}</main>
       </body>
     </html>
   );

@@ -6,7 +6,11 @@ import { Button } from "@/components/ui/button";
 import { Upload, Loader2 } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { Skeleton } from "@/components/ui/skeleton";
-import AboutUs from "@/components/AboutUs"; // <-- Added
+import Hero from "@/components/Hero";
+import Features from "@/components/Features";
+import HowItWorks from "@/components/HowItWorks";
+import AboutUs from "@/components/AboutUs";
+import Footer from "@/components/Footer";
 
 export default function Home() {
   const [file, setFile] = useState<File | null>(null);
@@ -38,17 +42,29 @@ export default function Home() {
   };
 
   return (
-    <div className="space-y-16">
-      {/* Title */}
-      <h1 className="text-4xl font-bold text-center">Brain Tumor Detection</h1>
-      <p className="text-center text-gray-600">
-        Upload an MRI scan to get a deep-learning–based prediction.
-      </p>
+    <>
+      {/* Hero Section */}
+      <Hero />
 
-      {/* Upload Card */}
-      <Card className="p-6">
-        <CardHeader>
-          <CardTitle>Upload MRI Scan</CardTitle>
+      {/* Features Section */}
+      <Features />
+
+      {/* How It Works Section */}
+      <HowItWorks />
+
+      {/* Upload Section */}
+      <div id="upload-section" className="max-w-4xl mx-auto px-4 py-24 space-y-12">
+        <div className="text-center space-y-4">
+          <h2 className="text-4xl md:text-5xl font-bold">Try It Now</h2>
+          <p className="text-xl text-muted-foreground">
+            Upload an MRI scan to get instant AI-powered analysis
+          </p>
+        </div>
+
+        {/* Upload Card */}
+        <Card className="shadow-xl">
+        <CardHeader className="pb-4">
+          <CardTitle className="text-2xl">Upload MRI Scan</CardTitle>
         </CardHeader>
 
         <CardContent className="space-y-4">
@@ -60,11 +76,11 @@ export default function Home() {
               const file = e.dataTransfer.files[0];
               onFileSelect(file);
             }}
-            className="border-2 border-dashed rounded-xl p-10 text-center hover:bg-gray-100 cursor-pointer"
+            className="border-2 border-dashed rounded-xl p-10 text-center hover:bg-muted/50 cursor-pointer transition-colors"
           >
-            <Upload className="mx-auto mb-4 text-gray-500" size={40} />
+            <Upload className="mx-auto mb-4 text-muted-foreground" size={40} />
 
-            <p className="text-gray-600">
+            <p className="text-muted-foreground">
               Drag & Drop your MRI image here <br /> or
             </p>
 
@@ -102,17 +118,17 @@ export default function Home() {
         </CardContent>
       </Card>
 
-      {/* Loading Skeletons */}
-      {loading && (
-        <div className="grid grid-cols-2 gap-6">
-          <Skeleton className="h-40 w-full" />
-          <Skeleton className="h-40 w-full" />
-        </div>
-      )}
+        {/* Loading Skeletons */}
+        {loading && (
+          <div className="grid grid-cols-2 gap-6">
+            <Skeleton className="h-40 w-full" />
+            <Skeleton className="h-40 w-full" />
+          </div>
+        )}
 
-      {/* Result Section */}
-      {result && (
-        <Card className="p-6">
+        {/* Result Section */}
+        {result && (
+          <Card className="shadow-xl">
           <CardHeader>
             <CardTitle>Prediction Results</CardTitle>
           </CardHeader>
@@ -151,10 +167,16 @@ export default function Home() {
             </div>
           </CardContent>
         </Card>
-      )}
+        )}
+      </div>
 
-      {/* ⭐ ABOUT US SECTION ADDED HERE ⭐ */}
-      <AboutUs />
-    </div>
+      {/* About Us Section */}
+      <div id="about-section" className="max-w-6xl mx-auto">
+        <AboutUs />
+      </div>
+
+      {/* Footer */}
+      <Footer />
+    </>
   );
 }
