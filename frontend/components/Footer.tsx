@@ -99,7 +99,7 @@ export default function Footer() {
               </a>
             </div>
             <p className="text-sm text-muted-foreground">
-              Have questions? We'd love to hear from you.
+              Have questions? We&apos;d love to hear from you.
             </p>
           </div>
         </div>

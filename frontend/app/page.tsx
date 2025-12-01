@@ -16,7 +16,11 @@ export default function Home() {
   const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState<any>(null);
+  const [result, setResult] = useState<{
+    label: string;
+    probability: number;
+    confidence: number;
+  } | null>(null);
 
   const onFileSelect = (f: File) => {
     setFile(f);
@@ -101,6 +105,7 @@ export default function Home() {
             {preview && (
               <img
                 src={preview}
+                alt="MRI scan preview"
                 className="mt-6 mx-auto w-64 rounded-lg shadow"
               />
             )}

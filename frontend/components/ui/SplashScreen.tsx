@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useRef, useState, useMemo } from "react";
-import { motion } from "framer-motion";
+import { useEffect, useState, useMemo } from "react";
+import { motion, type Variants } from "framer-motion";
 
 const logoUrl = "/logo.png"; // your uploaded logo
 
@@ -33,7 +33,7 @@ export default function SplashScreen() {
   const maxDistance = Math.max(...distances);
 
   // rolling character animation
-  const charVariant = {
+  const charVariant: Variants = {
     hidden: { y: 40, rotateX: 40, opacity: 0 },
     visible: (d: number) => ({
       y: 0,
@@ -42,12 +42,11 @@ export default function SplashScreen() {
       transition: {
         delay: d * 0.08,
         duration: 0.7,
-        ease: [0.25, 0.8, 0.25, 1],
       },
     }),
   };
 
-  const containerVariant = {
+  const containerVariant: Variants = {
     hidden: { opacity: 1 },
     visible: {
       opacity: 1,
@@ -55,7 +54,7 @@ export default function SplashScreen() {
     },
   };
 
-  const subtitleVariant = {
+  const subtitleVariant: Variants = {
     hidden: { y: 24, opacity: 0 },
     visible: {
       y: 0,
@@ -68,7 +67,7 @@ export default function SplashScreen() {
     <motion.div
       initial={{ opacity: 1 }}
       animate={{ opacity: show ? 1 : 0 }}
-      transition={{ duration: 1.2, ease: "easeOut" }}
+      transition={{ duration: 1.2 }}
       className={`fixed inset-0 z-9999 flex items-center justify-center
                   bg-black text-white pointer-events-none`}
     >

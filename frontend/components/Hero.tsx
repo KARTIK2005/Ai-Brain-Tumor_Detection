@@ -25,7 +25,7 @@ export default function Hero() {
         transition={{
           duration: 8,
           repeat: Infinity,
-          ease: "easeInOut",
+          ease: [0.42, 0, 0.58, 1],
         }}
       />
       <motion.div
@@ -37,7 +37,7 @@ export default function Hero() {
         transition={{
           duration: 10,
           repeat: Infinity,
-          ease: "easeInOut",
+          ease: [0.42, 0, 0.58, 1],
         }}
       />
 
@@ -47,7 +47,7 @@ export default function Hero() {
         <motion.div
           initial={{ scale: 0, rotate: -180 }}
           animate={{ scale: 1, rotate: 0 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
+          transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
           className="flex justify-center"
         >
           <div className="p-4 bg-primary/10 rounded-2xl">

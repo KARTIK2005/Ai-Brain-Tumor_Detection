@@ -1,10 +1,10 @@
 "use client";
 
 import { useRef } from "react";
-import { motion, useInView } from "framer-motion";
+import { motion, useInView, type Variants } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 
-const containerVariant = {
+const containerVariant: Variants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
@@ -14,14 +14,13 @@ const containerVariant = {
   },
 };
 
-const itemVariant = {
+const itemVariant: Variants = {
   hidden: { opacity: 0, y: 20 },
   visible: {
     opacity: 1,
     y: 0,
     transition: {
       duration: 0.6,
-      ease: "easeOut",
     },
   },
 };
