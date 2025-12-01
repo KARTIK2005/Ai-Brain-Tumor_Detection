@@ -35,7 +35,7 @@ export default function Home() {
     const fd = new FormData();
     fd.append("file", file);
 
-    const res = await fetch("http://localhost:8000/predict", {
+    const res = await fetch("https://ai-brain-tumor-detection-m5sy.onrender.com/predict", {
       method: "POST",
       body: fd,
     });
