@@ -1,160 +1,82 @@
 "use client";
 
-import { useState } from "react";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Upload, Loader2 } from "lucide-react";
-import { Progress } from "@/components/ui/progress";
-import { Skeleton } from "@/components/ui/skeleton";
-import AboutUs from "@/components/AboutUs"; // <-- Added
+import { motion, useInView } from "framer-motion";
+import { useRef } from "react";
 
-export default function Home() {
-  const [file, setFile] = useState<File | null>(null);
-  const [preview, setPreview] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState<any>(null);
+export default function AboutUs() {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: "-100px" });
 
-  const onFileSelect = (f: File) => {
-    setFile(f);
-    setPreview(URL.createObjectURL(f));
-    setResult(null);
+  // Parent controls stagger
+  const parentVariant = {
+    hidden: {},
+    visible: {
+      transition: { staggerChildren: 0.15 }
+    }
   };
 
-  const handlePredict = async () => {
-    if (!file) return;
-
-    setLoading(true);
-    const fd = new FormData();
-    fd.append("file", file);
-
-    const res = await fetch("https://ai-brain-tumor-detection-m5sy.onrender.com/predict", {
-      method: "POST",
-      body: fd,
-    });
-
-    const data = await res.json();
-    setResult(data);
-    setLoading(false);
+  // FM v11-safe easing (cubic bezier)
+  const wordVariant = {
+    hidden: {
+      opacity: 0,
+      y: 20
+    },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.6,
+        ease: [0.16, 1, 0.3, 1]  // SMOOTH EASE OUT
+      }
+    }
   };
+
+  const splitWords = (text: string) =>
+    text.split(" ").map((word, i) => (
+      <motion.span key={i} variants={wordVariant} className="inline-block mr-1">
+        {word}
+      </motion.span>
+    ));
 
   return (
-    <div className="space-y-16">
-      {/* Title */}
-      <h1 className="text-4xl font-bold text-center">Brain Tumor Detection</h1>
-      <p className="text-center text-gray-600">
-        Upload an MRI scan to get a deep-learning–based prediction.
-      </p>
+    <section className="min-h-screen w-full py-24 px-6">
+      <h2 className="text-center text-4xl font-bold mb-16">About Us</h2>
 
-      {/* Upload Card */}
-      <Card className="p-6">
-        <CardHeader>
-          <CardTitle>Upload MRI Scan</CardTitle>
-        </CardHeader>
+      <div className="max-w-4xl mx-auto space-y-20" ref={ref}>
 
-        <CardContent className="space-y-4">
-          {/* Drag & Drop Box */}
-          <div
-            onDragOver={(e) => e.preventDefault()}
-            onDrop={(e) => {
-              e.preventDefault();
-              const file = e.dataTransfer.files[0];
-              onFileSelect(file);
-            }}
-            className="border-2 border-dashed rounded-xl p-10 text-center hover:bg-gray-100 cursor-pointer"
-          >
-            <Upload className="mx-auto mb-4 text-gray-500" size={40} />
+        {/* Kartik */}
+        <motion.div
+          variants={parentVariant}
+          initial="hidden"
+          animate={inView ? "visible" : "hidden"}
+          className="p-8 rounded-xl bg-white/10 backdrop-blur-lg border border-white/10 shadow-lg"
+        >
+          <h3 className="text-2xl font-semibold mb-4">Kartik Singhal</h3>
 
-            <p className="text-gray-600">
-              Drag & Drop your MRI image here <br /> or
-            </p>
-
-            <Button className="mt-3">
-              <label className="cursor-pointer">
-                Select File
-                <input
-                  type="file"
-                  accept="image/*"
-                  hidden
-                  onChange={(e) =>
-                    e.target.files && onFileSelect(e.target.files[0])
-                  }
-                />
-              </label>
-            </Button>
-
-            {preview && (
-              <img
-                src={preview}
-                className="mt-6 mx-auto w-64 rounded-lg shadow"
-              />
+          <motion.p variants={parentVariant} className="text-lg leading-relaxed text-gray-200">
+            {splitWords(
+              "I am an enthusiastic developer specializing in AI, full-stack engineering, and intelligent systems. Passionate about solving real-world problems through innovation and clean design."
             )}
-          </div>
+          </motion.p>
+        </motion.div>
 
-          <Button
-            className="w-full h-12 text-lg font-medium"
-            onClick={handlePredict}
-            disabled={!file || loading}
-          >
-            {loading ? <Loader2 className="animate-spin mr-2" /> : "Analyze Image"}
-          </Button>
+        {/* Neeraj */}
+        <motion.div
+          variants={parentVariant}
+          initial="hidden"
+          animate={inView ? "visible" : "hidden"}
+          className="p-8 rounded-xl bg-white/10 backdrop-blur-lg border border-white/10 shadow-lg"
+        >
+          <h3 className="text-2xl font-semibold mb-4">Neeraj Rao</h3>
 
-          {loading && <Progress value={70} className="h-2" />}
-        </CardContent>
-      </Card>
+          <motion.p variants={parentVariant} className="text-lg leading-relaxed text-gray-200">
+            {splitWords(
+              "I focus on backend systems, deep learning pipelines, and high-performance applications. Dedicated to building powerful tools that improve workflow, efficiency, and user experience."
+            )}
+          </motion.p>
+        </motion.div>
 
-      {/* Loading Skeletons */}
-      {loading && (
-        <div className="grid grid-cols-2 gap-6">
-          <Skeleton className="h-40 w-full" />
-          <Skeleton className="h-40 w-full" />
-        </div>
-      )}
-
-      {/* Result Section */}
-      {result && (
-        <Card className="p-6">
-          <CardHeader>
-            <CardTitle>Prediction Results</CardTitle>
-          </CardHeader>
-
-          <CardContent className="space-y-6">
-            <div className="text-center">
-              <p className="text-xl">
-                Result:{" "}
-                <span
-                  className={`font-bold ${
-                    result.label === "Tumor" ? "text-red-600" : "text-green-600"
-                  }`}
-                >
-                  {result.label}
-                </span>
-              </p>
-              <p className="text-gray-600 mt-2">
-                Probability Score: {result.probability.toFixed(4)}
-              </p>
-            </div>
-
-            {/* Confidence Bar */}
-            <div className="space-y-3">
-              <p className="text-center text-gray-700 font-medium">
-                Confidence: {(result.confidence * 100).toFixed(2)}%
-              </p>
-
-              <div className="w-full bg-gray-200 rounded-full h-4">
-                <div
-                  className={`h-4 rounded-full ${
-                    result.label === "Tumor" ? "bg-red-500" : "bg-green-500"
-                  }`}
-                  style={{ width: `${result.confidence * 100}%` }}
-                ></div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      )}
-
-      {/* ⭐ ABOUT US SECTION ADDED HERE ⭐ */}
-      <AboutUs />
-    </div>
+      </div>
+    </section>
   );
 }
